@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的个人网页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 4rem 0;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+            animation: float 3s ease-in-out infinite;
+            transition: transform 0.3s;
+            object-fit: cover;
+            object-position: center 30%;
+        }
+
+        .profile-img:hover {
+            transform: scale(1.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.2rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        section {
+            background-color: white;
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            animation: fadeInUp 0.8s ease-out;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .skill-tag {
+            background-color: #e1e8f0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .skill-tag:hover {
+            background-color: #3498db;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .contact {
+            text-align: center;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: #333;
+            text-decoration: none;
+            transition: color 0.3s;
+            position: relative;
+            padding-bottom: 2px;
+        }
+
+        .social-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #3498db;
+            transition: width 0.3s;
+        }
+
+        .social-links a:hover::after {
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            header {
+                padding: 2rem 0;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .container section:nth-child(1) { animation-delay: 0.2s; }
+        .container section:nth-child(2) { animation-delay: 0.4s; }
+        .container section:nth-child(3) { animation-delay: 0.6s; }
+        .container section:nth-child(4) { animation-delay: 0.8s; }
+
+        /* 添加轮播相关样式 */
+        .slideshow-container {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            overflow: hidden;
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .slide {
+            display: none;
+            animation: fade 1.5s ease;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 600px;
+            object-fit: contain;
+            border-radius: 4px;
+            background-color: #f5f5f5;
+        }
+
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 16px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            background-color: rgba(0,0,0,0.4);
+            border-radius: 4px;
+            user-select: none;
+            transition: 0.3s ease;
+        }
+
+        .next {
+            right: 0;
+        }
+
+        .prev:hover, .next:hover {
+            background-color: rgba(0,0,0,0.8);
+        }
+
+        .dots {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .dot {
+            height: 10px;
+            width: 10px;
+            margin: 0 4px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .active, .dot:hover {
+            background-color: #3498db;
+        }
+
+        @keyframes fade {
+            from {opacity: 0.4}
+            to {opacity: 1}
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="C:/Users/鴿/新建文件夹/imgs/4cd33dbe6ec6bfe5156839e228846ce.jpg" alt="个人头像" class="profile-img">
+        <h1>张家铭</h1>
+        <p class="subtitle">职业头衔 / 个人简介</p>
+    </header>
+
+    <div class="container">
+        <section>
+            <h2>关于我</h2>
+            <p>在这里写一段简短的个人介绍，描述您的背景、兴趣��目标。</p>
+        </section>
+
+        <section>
+            <h2>技能专长</h2>
+            <div class="skills">
+                <span class="skill-tag">HTML5</span>
+                <span class="skill-tag">CSS3</span>
+                <span class="skill-tag">JavaScript</span>
+                <span class="skill-tag">设计</span>
+                <span class="skill-tag">摄影</span>
+            </div>
+        </section>
+
+        <section>
+            <h2>个人相册</h2>
+            <div class="slideshow-container">
+                <div class="slide">
+                    <img src="C:/Users/鴿/新建文件夹/imgs/f75e60f5a915599c43781283294df60.jpg" alt="镜子自拍">
+                </div>
+                <div class="slide">
+                    <img src="C:/Users/鴿/新建文件夹/imgs/ec98850bdf8aa4b2f51115a7e12cebc.jpg" alt="照片2">
+                </div>
+                <div class="slide">
+                    <img src="C:/Users/鴿/新建文件夹/imgs/769d877bafed742217c6fa068b3cf01.jpg" alt="照片3">
+                </div>
+                <div class="slide">
+                    <img src="C:/Users/鴿/新建文件夹/imgs/d4566b93d12598e4e27cc7d3ffa81ea.jpg" alt="照片4">
+                </div>
+
+                <a class="prev" onclick="changeSlide(-1)">&#10094;</a>
+                <a class="next" onclick="changeSlide(1)">&#10095;</a>
+
+                <div class="dots">
+                    <span class="dot" onclick="currentSlide(1)"></span>
+                    <span class="dot" onclick="currentSlide(2)"></span>
+                    <span class="dot" onclick="currentSlide(3)"></span>
+                    <span class="dot" onclick="currentSlide(4)"></span>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact">
+            <h2>联系方式</h2>
+            <p>电子邮件：zjmnb153000jjjj@outlook.com</p>
+            <div class="social-links">
+                <a href="#">GitHub</a>
+                <a href="#">LinkedIn</a>
+                <a href="#">微博</a>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        let slideIndex = 1;
+        showSlides(slideIndex);
+
+        function changeSlide(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+        function showSlides(n) {
+            let slides = document.getElementsByClassName("slide");
+            let dots = document.getElementsByClassName("dot");
+
+            if (n > slides.length) {slideIndex = 1}
+            if (n < 1) {slideIndex = slides.length}
+
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (let i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+
+            slides[slideIndex-1].style.display = "block";
+            dots[slideIndex-1].className += " active";
+        }
+
+        // 自动播放
+        setInterval(() => {
+            changeSlide(1);
+        }, 5000);
+    </script>
+</body>
+</html>
